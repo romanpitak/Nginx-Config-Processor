@@ -132,7 +132,7 @@ abstract class StringProcessor
 
     public function __toString()
     {
-        return $this->prettyPrint(0);
+        return $this->prettyPrint(-1);
     }
 
 }
@@ -182,15 +182,10 @@ class Scope extends StringProcessor
 
     public function prettyPrint($indentLevel, $spacesPerIndent = 4)
     {
-        $indent = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel);
-
-        $rs = "{\n";
-
+        $rs = "";
         foreach ($this->directives as $directive) {
             $rs .= $directive->prettyPrint($indentLevel + 1, $spacesPerIndent);
         }
-
-        $rs .= $indent . "}\n";
 
         return $rs;
     }
@@ -261,8 +256,9 @@ class Directive extends StringProcessor
 
     public function prettyPrint($indentLevel, $spacesPerIndent = 4)
     {
-        $rs = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel) . $this->name . " " . $this->value;
-        $rs .= isset($this->scope) ? (" " . $this->scope->prettyPrint($indentLevel, $spacesPerIndent)) : ";\n";
+        $indent = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel);
+        $rs = $indent . $this->name . " " . $this->value;
+        $rs .= isset($this->scope) ? (" {\n" . $this->scope->prettyPrint($indentLevel, $spacesPerIndent) . $indent .  "}\n") : ";\n";
         return $rs;
     }
 
