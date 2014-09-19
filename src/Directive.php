@@ -36,7 +36,7 @@ class Directive extends StringProcessor
                 $this->processText();
                 $this->scope = new Scope($configString);
                 $configString->inc();
-                break; // this continue is not important
+                break;
             }
 
             if (';' === $c) {

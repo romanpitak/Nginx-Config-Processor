@@ -39,7 +39,7 @@ abstract class StringProcessor
     }
 
     /**
-     * @return String
+     * @return \RomanPitak\Nginx\Config\String
      */
     protected function getConfigString()
     {

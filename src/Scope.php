@@ -29,14 +29,14 @@ class Scope extends StringProcessor
 
             if (('a' <= $c) && ('z' >= $c)) {
                 $this->directives[] = new Directive($configString);
-                continue; // this continue is important for some reason
+                continue;
             }
 
-            if ('}' === $this->getConfigString()->getChar()) {
+            if ('}' === $configString->getChar()) {
                 break;
             }
 
-            $this->getConfigString()->inc();
+            $configString->inc();
         }
     }
 
