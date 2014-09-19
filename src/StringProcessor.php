@@ -15,10 +15,10 @@ namespace RomanPitak\Nginx\Config;
 abstract class StringProcessor
 {
 
-    /** @var ConfigString $configString */
+    /** @var String $configString */
     private $configString;
 
-    public function __construct(ConfigString $configString)
+    public function __construct(String $configString)
     {
         $this->configString = $configString;
         $this->run();
@@ -39,7 +39,7 @@ abstract class StringProcessor
     }
 
     /**
-     * @return ConfigString
+     * @return String
      */
     protected function getConfigString()
     {
