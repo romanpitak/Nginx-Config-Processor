@@ -14,28 +14,68 @@ namespace RomanPitak\Nginx\Config;
 
 class Comment
 {
-    /**
-     * @var \RomanPitak\Nginx\Config\String $configString
-     */
-    private $configString;
+    /** @var string $text */
+    private $text = null;
 
-    /**
-     * @param \RomanPitak\Nginx\Config\String $configString
-     */
-    public function __construct(String $configString)
+    public function __construct($text = null)
     {
-        $this->configString = $configString;
-        $this->run();
+        $this->text = $text;
     }
 
-    protected function run()
+    public static function fromString(String $configString)
     {
-        $this->configString->gotoNextEol();
+        $text = '';
+        while ((false === $configString->eof()) && (false === $configString->eol())) {
+            $text .= $configString->getChar();
+            $configString->inc();
+        }
+        return new Comment(ltrim($text, "# "));
+    }
+
+    /**
+     * Get comment text
+     *
+     * @return string|null
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * Set the comment text
+     *
+     * If you set the comment text to null or empty string,
+     * the comment will not print.
+     *
+     * @param string|null $text
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
     }
 
     public function prettyPrint($indentLevel, $spacesPerIndent = 4)
     {
-        return "# comment was here";
+        if ((is_null($this->text)) || ('' === $this->getText()))
+        {
+            return '';
+        }
+
+        $indent = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel);
+        $text = $indent . "# " . rtrim($this->text);
+
+        // check multi-line comment
+        if ((false !== strpos($text, "\n"))) {
+            $text = preg_replace("#\r{0,1}\n#", PHP_EOL . $indent . "# ", $text);
+        }
+
+        return $text;
+    }
+
+    public function __toString()
+    {
+        return $this->prettyPrint(0);
     }
 
 }

@@ -38,6 +38,8 @@ class String
     /**
      * Returns one character of the string.
      *
+     * Does not move the string pointer. Use inc() to move the pointer after getChar().
+     *
      * @param int $position If not specified, current character is returned.
      * @return string The current character (under the pointer).
      * @throws Exception When out of range
@@ -57,6 +59,17 @@ class String
         }
 
         return $this->data[$position];
+    }
+
+    /**
+     * Is this the end of line?
+     *
+     * @return bool
+     * @throws Exception
+     */
+    public function eol()
+    {
+        return (("\r" === $this->getChar()) || ("\n" === $this->getChar()));
     }
 
     /**
@@ -87,27 +100,13 @@ class String
      * ========== Temporary ==========
      */
 
-    /**
-     * Temporary! Move string pointer to the end of line.
-     */
-    public function gotoNextEol()
-    {
-        $nextEol = strpos($this->data, PHP_EOL, $this->position);
-
-        if (false === $nextEol) {
-            $nextEol = strlen($this->data) - 1;
-        }
-
-        $this->position = $nextEol;
-    }
-
     public function skipComment()
     {
         if ('#' !== $this->getChar()) {
             return false;
         }
 
-        new Comment($this);
+        echo Comment::fromString($this) . "\n\n";
         return true;
     }
 }
