@@ -13,11 +13,15 @@ echo "START\n";
 
 //*
 $f = new File('m1.conf');
-$s = new Scope($f);
+$s = Scope::fromString($f);
 echo $s . "\n\n";
 //*/
 
 $d = new Directive('listen', 667);
-echo $d->prettyPrint(0) . "\n";
+echo $d->prettyPrint(0) . "\n\n";
+
+$s2 = new Scope();
+$s2->addDirective($d);
+echo $s2 . "\n\n";
 
 echo "STOP\n";

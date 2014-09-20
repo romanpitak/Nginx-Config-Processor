@@ -15,36 +15,30 @@ namespace RomanPitak\Nginx\Config;
 class Scope
 {
 
+    /** @var Directive $parentDirective */
+    private $parentDirective;
+
     /** @var Directive[] $directives */
     private $directives = array();
 
-
     /**
-     * @var \RomanPitak\Nginx\Config\String $configString
-     */
-    private $configString;
-
-
-    /**
+     * Create new Scope from the configuration string.
+     *
      * @param \RomanPitak\Nginx\Config\String $configString
+     * @return Scope
+     * @throws Exception
      */
-    public function __construct(String $configString)
+    public static function fromString(String $configString)
     {
-        $this->configString = $configString;
-        $this->run();
-    }
-
-    protected function run()
-    {
-        $configString = $this->configString;
+        $scope = new Scope();
         while (false === $configString->eof()) {
 
-            $this->configString->skipComment();
+            $configString->skipComment();
 
             $c = $configString->getChar();
 
             if (('a' <= $c) && ('z' >= $c)) {
-                $this->directives[] = Directive::fromString($configString, $this);
+                $scope->addDirective(Directive::fromString($configString));
                 continue;
             }
 
@@ -54,8 +48,54 @@ class Scope
 
             $configString->inc();
         }
+        return $scope;
     }
 
+    /**
+     * Create new Scope from a file.
+     *
+     * @param $filePath
+     * @return Scope
+     */
+    public static function fromFile($filePath)
+    {
+        return self::fromString(new File($filePath));
+    }
+
+    /**
+     * Add a Directive to the list of this Scopes directives
+     *
+     * Adds the Directive and sets the Directives parent Scope to $this.
+     *
+     * @param Directive $directive
+     * @return $this
+     */
+    public function addDirective(Directive $directive)
+    {
+        $directive->setParentScope($this);
+        $this->directives[] = $directive;
+        return $this;
+    }
+
+    /**
+     * Sets parent directive for this Scope.
+     *
+     * @param Directive $parentDirective
+     * @return $this
+     */
+    public function setParentDirective(Directive $parentDirective)
+    {
+        $this->parentDirective = $parentDirective;
+        return $this;
+    }
+
+    /**
+     * Pretty print with indentation.
+     *
+     * @param $indentLevel
+     * @param int $spacesPerIndent
+     * @return string
+     */
     public function prettyPrint($indentLevel, $spacesPerIndent = 4)
     {
         $rs = "";

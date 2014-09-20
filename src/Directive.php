@@ -38,20 +38,19 @@ class Directive
         $this->name = $name;
         $this->value = $value;
         if (!is_null($childScope)) {
-            $this->childScope = $childScope;
+            $this->setChildScope($childScope);
         }
         if (!is_null($parentScope)) {
-            $this->parentScope = $parentScope;
+            $this->setParentScope($parentScope);
         }
     }
 
     /**
      * @param \RomanPitak\Nginx\Config\String $configString
-     * @param Scope $parentScope
      * @return self
      * @throws Exception
      */
-    public static function fromString(String $configString, Scope $parentScope = null)
+    public static function fromString(String $configString)
     {
         $text = '';
         while (false === $configString->eof()) {
@@ -62,14 +61,17 @@ class Directive
 
             if ('{' === $c) {
                 list($name, $value) = self::processText($text);
-                $childScope = new Scope($configString);
+                $directive = new Directive($name, $value);
+                $childScope = Scope::fromString($configString);
+                $childScope->setParentDirective($directive);
+                $directive->setChildScope($childScope);
                 $configString->inc();
-                return new Directive($name, $value, $childScope, $parentScope);
+                return $directive;
             }
 
             if (';' === $c) {
                 list($name, $value) = self::processText($text);
-                return new Directive($name, $value, null, $parentScope);
+                return new Directive($name, $value);
             }
 
             $text .= $c;
@@ -106,6 +108,37 @@ class Directive
 
     }
 
+    /**
+     * Sets the parent Scope for this Directive.
+     *
+     * @param Scope $parentScope
+     * @return $this
+     */
+    public function setParentScope(Scope $parentScope)
+    {
+        $this->parentScope = $parentScope;
+        return $this;
+    }
+
+    /**
+     * Sets the child Scope for this Directive.
+     *
+     * @param Scope $childScope
+     * @return $this
+     */
+    public function setChildScope(Scope $childScope)
+    {
+        $this->childScope = $childScope;
+        return $this;
+    }
+
+    /**
+     * Pretty print with indentation.
+     *
+     * @param $indentLevel
+     * @param int $spacesPerIndent
+     * @return string
+     */
     public function prettyPrint($indentLevel, $spacesPerIndent = 4)
     {
         $indent = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel);
