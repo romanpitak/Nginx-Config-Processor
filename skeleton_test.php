@@ -12,8 +12,7 @@ require_once('src/File.php');
 echo "START\n";
 
 //*
-$s = Scope::fromFile('m1.conf');
-echo $s . "\n\n";
+echo Scope::fromFile('m1.conf') . "\n\n";
 //*/
 
 $d = new Directive('listen', 667);
