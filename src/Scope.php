@@ -39,13 +39,16 @@ class Scope extends Printable
         $scope = new Scope();
         while (false === $configString->eof()) {
 
-            $configString->skipComment();
-
             if (true === $configString->isEmptyLine()) {
                 $scope->addPrintable(EmptyLine::fromString($configString));
             }
 
             $c = $configString->getChar();
+
+            if ('#' === $c) {
+                $scope->addPrintable(Comment::fromString($configString));
+                continue;
+            }
 
             if (('a' <= $c) && ('z' >= $c)) {
                 $scope->addDirective(Directive::fromString($configString));

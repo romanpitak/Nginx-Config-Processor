@@ -198,18 +198,4 @@ class String
         }
         $this->position = $this->getNextEol($position);
     }
-
-    /*
-     * ========== Temporary ==========
-     */
-
-    public function skipComment()
-    {
-        if ('#' !== $this->getChar()) {
-            return false;
-        }
-
-        Comment::fromString($this);
-        return true;
-    }
 }
