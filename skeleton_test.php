@@ -3,7 +3,6 @@
 namespace RomanPitak\Nginx\Config;
 
 require_once('src/Exception.php');
-require_once('src/StringProcessor.php');
 require_once('src/Comment.php');
 require_once('src/Directive.php');
 require_once('src/Scope.php');

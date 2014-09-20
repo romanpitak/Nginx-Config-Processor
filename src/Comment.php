@@ -12,12 +12,25 @@
 
 namespace RomanPitak\Nginx\Config;
 
-class Comment extends StringProcessor
+class Comment
 {
+    /**
+     * @var \RomanPitak\Nginx\Config\String $configString
+     */
+    private $configString;
+
+    /**
+     * @param \RomanPitak\Nginx\Config\String $configString
+     */
+    public function __construct(String $configString)
+    {
+        $this->configString = $configString;
+        $this->run();
+    }
 
     protected function run()
     {
-        $this->getConfigString()->gotoNextEol();
+        $this->configString->gotoNextEol();
     }
 
     public function prettyPrint($indentLevel, $spacesPerIndent = 4)

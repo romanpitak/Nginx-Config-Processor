@@ -12,7 +12,7 @@
 
 namespace RomanPitak\Nginx\Config;
 
-class Directive extends StringProcessor
+class Directive
 {
 
     /** @var Scope $childScope */
@@ -21,10 +21,17 @@ class Directive extends StringProcessor
     /** @var Scope $parentScope */
     private $parentScope;
 
+
     /** @var string $text */
     private $text = '';
 
     private $name, $value;
+
+    /**
+     * @var \RomanPitak\Nginx\Config\String $configString
+     */
+    private $configString;
+
 
     /**
      * @param \RomanPitak\Nginx\Config\String $configString
@@ -35,15 +42,17 @@ class Directive extends StringProcessor
         if (!is_null($parentScope)) {
             $this->parentScope = $parentScope;
         }
-        parent::__construct($configString);
+
+        $this->configString = $configString;
+        $this->run();
     }
 
     protected function run()
     {
-        $configString = $this->getConfigString();
+        $configString = $this->configString;
         while (false === $configString->eof()) {
 
-            $this->skipComment();
+            $this->configString->skipComment();
 
             $c = $configString->getChar();
 

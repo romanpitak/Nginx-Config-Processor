@@ -12,18 +12,34 @@
 
 namespace RomanPitak\Nginx\Config;
 
-class Scope extends StringProcessor
+class Scope
 {
 
     /** @var Directive[] $directives */
     private $directives = array();
 
+
+    /**
+     * @var \RomanPitak\Nginx\Config\String $configString
+     */
+    private $configString;
+
+
+    /**
+     * @param \RomanPitak\Nginx\Config\String $configString
+     */
+    public function __construct(String $configString)
+    {
+        $this->configString = $configString;
+        $this->run();
+    }
+
     protected function run()
     {
-        $configString = $this->getConfigString();
+        $configString = $this->configString;
         while (false === $configString->eof()) {
 
-            $this->skipComment();
+            $this->configString->skipComment();
 
             $c = $configString->getChar();
 
@@ -48,6 +64,11 @@ class Scope extends StringProcessor
         }
 
         return $rs;
+    }
+
+    public function __toString()
+    {
+        return $this->prettyPrint(-1);
     }
 
 }

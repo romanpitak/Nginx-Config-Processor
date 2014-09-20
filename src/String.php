@@ -91,4 +91,14 @@ class String extends Scope
         return $this->data[$position];
     }
 
+    public function skipComment()
+    {
+        if ('#' !== $this->getChar()) {
+            return false;
+        }
+
+        new Comment($this);
+        return true;
+    }
+
 }
