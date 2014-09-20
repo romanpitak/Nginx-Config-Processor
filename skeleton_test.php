@@ -11,8 +11,12 @@ require_once('src/File.php');
 
 echo "START\n";
 
+/*
 $f = new File('m1.conf');
-
 echo $f . "\n\n";
+//*/
+
+$d = new Directive('listen', 667);
+echo $d->prettyPrint(0) . "\n";
 
 echo "STOP\n";

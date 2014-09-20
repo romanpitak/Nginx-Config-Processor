@@ -44,7 +44,7 @@ class Scope
             $c = $configString->getChar();
 
             if (('a' <= $c) && ('z' >= $c)) {
-                $this->directives[] = new Directive($configString, $this);
+                $this->directives[] = Directive::fromString($configString, $this);
                 continue;
             }
 

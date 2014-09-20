@@ -15,85 +15,94 @@ namespace RomanPitak\Nginx\Config;
 class Directive
 {
 
+    /** @var string $name */
+    private $name;
+
+    /** @var string $value */
+    private $value;
+
     /** @var Scope $childScope */
     private $childScope;
 
     /** @var Scope $parentScope */
     private $parentScope;
 
-
-    /** @var string $text */
-    private $text = '';
-
-    private $name, $value;
-
     /**
-     * @var \RomanPitak\Nginx\Config\String $configString
+     * @param string $name
+     * @param string $value
+     * @param Scope $childScope
+     * @param Scope $parentScope
      */
-    private $configString;
-
+    public function __construct($name, $value, Scope $childScope = null, Scope $parentScope = null)
+    {
+        $this->name = $name;
+        $this->value = $value;
+        if (!is_null($childScope)) {
+            $this->childScope = $childScope;
+        }
+        if (!is_null($parentScope)) {
+            $this->parentScope = $parentScope;
+        }
+    }
 
     /**
      * @param \RomanPitak\Nginx\Config\String $configString
      * @param Scope $parentScope
+     * @return self
+     * @throws Exception
      */
-    public function __construct(String $configString, Scope $parentScope)
+    public static function fromString(String $configString, Scope $parentScope = null)
     {
-        if (!is_null($parentScope)) {
-            $this->parentScope = $parentScope;
-        }
-
-        $this->configString = $configString;
-        $this->run();
-    }
-
-    protected function run()
-    {
-        $configString = $this->configString;
+        $text = '';
         while (false === $configString->eof()) {
 
-            $this->configString->skipComment();
+            $configString->skipComment();
 
             $c = $configString->getChar();
 
             if ('{' === $c) {
-                $this->processText();
-                $this->childScope = new Scope($configString);
+                list($name, $value) = self::processText($text);
+                $childScope = new Scope($configString);
                 $configString->inc();
-                break;
+                return new Directive($name, $value, $childScope, $parentScope);
             }
 
             if (';' === $c) {
-                $this->processText();
-                break;
+                list($name, $value) = self::processText($text);
+                return new Directive($name, $value, null, $parentScope);
             }
 
-            $this->text .= $c;
+            $text .= $c;
 
             $configString->inc();
         }
+        throw new Exception('Could not create directive.');
     }
 
-    private function processText()
+    private static function processText($text)
     {
         $found = false;
+        $name = null;
+        $value = null;
 
         $patternWithValue = '#^([a-z_]+) +([^;{]+)$#';
-        if (1 === preg_match($patternWithValue, $this->text, $matches)) {
-            $this->name = $matches[1];
-            $this->value = rtrim($matches[2]);
+        if (1 === preg_match($patternWithValue, $text, $matches)) {
+            $name = $matches[1];
+            $value = rtrim($matches[2]);
             $found = true;
         }
 
         $patternWithoutValue = '#^([a-z_]+) *$#';
-        if (1 === preg_match($patternWithoutValue, $this->text, $matches)) {
-            $this->name = $matches[1];
-            $this->value = null;
+        if (1 === preg_match($patternWithoutValue, $text, $matches)) {
+            $name = $matches[1];
+            $value = null;
             $found = true;
         }
         if (false === $found) {
-            throw new Exception('Text "' . $this->text . '" did not match pattern.');
+            throw new Exception('Text "' . $text . '" did not match pattern.');
         }
+
+        return array($name, $value);
 
     }
 
@@ -101,7 +110,7 @@ class Directive
     {
         $indent = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel);
         $rs = $indent . $this->name . " " . $this->value;
-        $rs .= isset($this->childScope) ? (" {\n" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent .  "}\n") : ";\n";
+        $rs .= isset($this->childScope) ? (" {\n" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent . "}\n") : ";\n";
         return $rs;
     }
 
