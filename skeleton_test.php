@@ -11,9 +11,10 @@ require_once('src/File.php');
 
 echo "START\n";
 
-/*
+//*
 $f = new File('m1.conf');
-echo $f . "\n\n";
+$s = new Scope($f);
+echo $s . "\n\n";
 //*/
 
 $d = new Directive('listen', 667);

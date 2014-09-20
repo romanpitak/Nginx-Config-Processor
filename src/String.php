@@ -12,7 +12,7 @@
 
 namespace RomanPitak\Nginx\Config;
 
-class String extends Scope
+class String
 {
 
     const CURRENT_POSITION = -1;
@@ -30,7 +30,7 @@ class String extends Scope
     {
         $this->position = 0;
         $this->data = $data;
-        parent::__construct($this);
+        //parent::__construct($this);
     }
 
     /**
