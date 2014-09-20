@@ -16,7 +16,7 @@ class Scope extends StringProcessor
 {
 
     /** @var Directive[] $directives */
-    private $directives;
+    private $directives = array();
 
     protected function run()
     {
@@ -28,7 +28,7 @@ class Scope extends StringProcessor
             $c = $configString->getChar();
 
             if (('a' <= $c) && ('z' >= $c)) {
-                $this->directives[] = new Directive($configString);
+                $this->directives[] = new Directive($configString, $this);
                 continue;
             }
 

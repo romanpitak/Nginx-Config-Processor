@@ -15,13 +15,28 @@ namespace RomanPitak\Nginx\Config;
 class Directive extends StringProcessor
 {
 
-    /** @var Scope $scope */
-    private $scope;
+    /** @var Scope $childScope */
+    private $childScope;
+
+    /** @var Scope $parentScope */
+    private $parentScope;
 
     /** @var string $text */
     private $text = '';
 
     private $name, $value;
+
+    /**
+     * @param \RomanPitak\Nginx\Config\String $configString
+     * @param Scope $parentScope
+     */
+    public function __construct(String $configString, Scope $parentScope)
+    {
+        if (!is_null($parentScope)) {
+            $this->parentScope = $parentScope;
+        }
+        parent::__construct($configString);
+    }
 
     protected function run()
     {
@@ -34,7 +49,7 @@ class Directive extends StringProcessor
 
             if ('{' === $c) {
                 $this->processText();
-                $this->scope = new Scope($configString);
+                $this->childScope = new Scope($configString);
                 $configString->inc();
                 break;
             }
@@ -67,9 +82,8 @@ class Directive extends StringProcessor
             $this->value = null;
             $found = true;
         }
-
         if (false === $found) {
-            throw new Exception('Did not match pattern.');
+            throw new Exception('Text "' . $this->text . '" did not match pattern.');
         }
 
     }
@@ -78,7 +92,7 @@ class Directive extends StringProcessor
     {
         $indent = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel);
         $rs = $indent . $this->name . " " . $this->value;
-        $rs .= isset($this->scope) ? (" {\n" . $this->scope->prettyPrint($indentLevel, $spacesPerIndent) . $indent .  "}\n") : ";\n";
+        $rs .= isset($this->childScope) ? (" {\n" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent .  "}\n") : ";\n";
         return $rs;
     }
 

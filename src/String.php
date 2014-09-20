@@ -23,6 +23,9 @@ class String extends Scope
     /** @var int $position */
     private $position;
 
+    /**
+     * @param string $data
+     */
     public function __construct($data)
     {
         $this->position = 0;

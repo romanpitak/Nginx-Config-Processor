@@ -15,9 +15,14 @@ namespace RomanPitak\Nginx\Config;
 abstract class StringProcessor
 {
 
-    /** @var String $configString */
+    /**
+     * @var \RomanPitak\Nginx\Config\String $configString
+     */
     private $configString;
 
+    /**
+     * @param \RomanPitak\Nginx\Config\String $configString
+     */
     public function __construct(String $configString)
     {
         $this->configString = $configString;

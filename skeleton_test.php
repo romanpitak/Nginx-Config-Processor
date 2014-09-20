@@ -14,6 +14,6 @@ echo "START\n";
 
 $f = new File('m1.conf');
 
-echo $f;
+echo $f . "\n\n";
 
 echo "STOP\n";
