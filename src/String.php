@@ -62,24 +62,50 @@ class String
     }
 
     /**
-     * Is this the end of line?
+     * Get the text from $position to the next end of line.
      *
-     * @return bool
-     * @throws Exception
+     * Does not move the string pointer.
+     *
+     * @param int $position
+     * @return string
      */
-    public function eol()
+    public function getRestOfTheLine($position = self::CURRENT_POSITION)
     {
-        return (("\r" === $this->getChar()) || ("\n" === $this->getChar()));
+        if (self::CURRENT_POSITION === $position) {
+            $position = $this->position;
+        }
+        $text = '';
+        while((false === $this->eol($position)) && (false === $this->eof($position))) {
+            $text = $this->getChar($position);
+            $position++;
+        }
+        return $text;
     }
 
     /**
-     * Is this the end of file (string)?
+     * Is this the end of line?
      *
+     * @param int $position
+     * @return bool
+     * @throws Exception
+     */
+    public function eol($position = self::CURRENT_POSITION)
+    {
+        return (("\r" === $this->getChar($position)) || ("\n" === $this->getChar($position)));
+    }
+
+    /**
+     * Is this the end of file (string) or beyond?
+     *
+     * @param int $position
      * @return bool
      */
-    public function eof()
+    public function eof($position = self::CURRENT_POSITION)
     {
-        return (!isset($this->data[$this->position]));
+        if (self::CURRENT_POSITION === $position) {
+            $position = $this->position;
+        }
+        return (!isset($this->data[$position]));
     }
 
     /*
@@ -106,7 +132,7 @@ class String
             return false;
         }
 
-        echo Comment::fromString($this) . "\n\n";
+        Comment::fromString($this);
         return true;
     }
 }
