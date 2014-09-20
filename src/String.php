@@ -95,6 +95,70 @@ class String
     }
 
     /**
+     * Is this line empty?
+     *
+     * @param int $position
+     * @return bool
+     */
+    public function isEmptyLine($position = self::CURRENT_POSITION)
+    {
+        $line = $this->getCurrentLine($position);
+        return (0 === strlen(trim($line)));
+    }
+
+    /**
+     * Get the current line.
+     *
+     * @param int $position
+     * @return string
+     */
+    public function getCurrentLine($position = self::CURRENT_POSITION)
+    {
+        if (self::CURRENT_POSITION === $position) {
+            $position = $this->position;
+        }
+
+        $offset = $this->getLastEol($position);
+        $length = $this->getNextEol($position) - $offset;
+        return substr($this->data, $offset, $length);
+    }
+
+    /**
+     * Get the position of the last (previous) EOL.
+     *
+     * @param int $position
+     * @return int
+     */
+    public function getLastEol($position = self::CURRENT_POSITION)
+    {
+        if (self::CURRENT_POSITION === $position) {
+            $position = $this->position;
+        }
+
+        return strrpos(substr($this->data, 0, $position), "\n", 0);
+    }
+
+    /**
+     * Get the position of the next EOL.
+     *
+     * @param int $position
+     * @return int
+     */
+    public function getNextEol($position = self::CURRENT_POSITION)
+    {
+        if (self::CURRENT_POSITION === $position) {
+            $position = $this->position;
+        }
+
+        $eolPosition = strpos($this->data, "\n", $position);
+        if (false === $eolPosition) {
+            $eolPosition = strlen($this->data) - 1;
+        }
+
+        return $eolPosition;
+    }
+
+    /**
      * Is this the end of file (string) or beyond?
      *
      * @param int $position
@@ -120,6 +184,19 @@ class String
     public function inc($inc = 1)
     {
         $this->position += $inc;
+    }
+
+    /**
+     * Move pointer (position) to the next EOL.
+     *
+     * @param int $position
+     */
+    public function gotoNextEol($position = self::CURRENT_POSITION)
+    {
+        if (self::CURRENT_POSITION === $position) {
+            $position = $this->position;
+        }
+        $this->position = $this->getNextEol($position);
     }
 
     /*
