@@ -22,10 +22,10 @@ class Directive
     private $value;
 
     /** @var Scope $childScope */
-    private $childScope;
+    private $childScope = null;
 
     /** @var Scope $parentScope */
-    private $parentScope;
+    private $parentScope = null;
 
     /**
      * @param string $name
@@ -109,6 +109,26 @@ class Directive
     }
 
     /**
+     * Get parent Scope
+     *
+     * @return Scope|null
+     */
+    public function getParentScope()
+    {
+        return $this->parentScope;
+    }
+
+    /**
+     * Get child Scope.
+     *
+     * @return Scope|null
+     */
+    public function getChildScope()
+    {
+        return $this->childScope;
+    }
+
+    /**
      * Sets the parent Scope for this Directive.
      *
      * @param Scope $parentScope
@@ -123,12 +143,20 @@ class Directive
     /**
      * Sets the child Scope for this Directive.
      *
+     * Sets the child Scope for this Directive and also
+     * sets the $childScope->setParentDirective($this).
+     *
      * @param Scope $childScope
      * @return $this
      */
     public function setChildScope(Scope $childScope)
     {
         $this->childScope = $childScope;
+
+        if ($childScope->getParentDirective() !== $this) {
+            $childScope->setParentDirective($this);
+        }
+
         return $this;
     }
 
@@ -143,7 +171,7 @@ class Directive
     {
         $indent = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel);
         $rs = $indent . $this->name . " " . $this->value;
-        $rs .= isset($this->childScope) ? (" {\n" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent . "}\n") : ";\n";
+        $rs .= (!is_null($this->childScope)) ? (" {\n" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent . "}\n") : ";\n";
         return $rs;
     }
 

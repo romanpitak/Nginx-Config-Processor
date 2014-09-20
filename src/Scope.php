@@ -16,7 +16,7 @@ class Scope
 {
 
     /** @var Directive $parentDirective */
-    private $parentDirective;
+    private $parentDirective = null;
 
     /** @var Directive[] $directives */
     private $directives = array();
@@ -72,13 +72,30 @@ class Scope
      */
     public function addDirective(Directive $directive)
     {
-        $directive->setParentScope($this);
+        if ($directive->getParentScope() !== $this) {
+            $directive->setParentScope($this);
+        }
+
         $this->directives[] = $directive;
+
         return $this;
     }
 
     /**
-     * Sets parent directive for this Scope.
+     * Get parent Directive.
+     *
+     * @return Directive|null
+     */
+    public function getParentDirective()
+    {
+        return $this->parentDirective;
+    }
+
+    /**
+     * Set parent directive for this Scope.
+     *
+     * Sets parent directive for this Scope and also
+     * sets the $parentDirective->setChildScope($this)
      *
      * @param Directive $parentDirective
      * @return $this
@@ -86,6 +103,11 @@ class Scope
     public function setParentDirective(Directive $parentDirective)
     {
         $this->parentDirective = $parentDirective;
+
+        if ($parentDirective->getChildScope() !== $this) {
+            $parentDirective->setChildScope($this);
+        }
+
         return $this;
     }
 
