@@ -76,7 +76,7 @@ class String
         }
         $text = '';
         while((false === $this->eol($position)) && (false === $this->eof($position))) {
-            $text = $this->getChar($position);
+            $text .= $this->getChar($position);
             $position++;
         }
         return $text;
