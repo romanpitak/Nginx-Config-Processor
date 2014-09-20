@@ -78,8 +78,19 @@ class Directive
             }
 
             if (';' === $c) {
+                $configString->inc();
                 list($name, $value) = self::processText($text);
-                return new Directive($name, $value);
+                $directive = new Directive($name, $value);
+
+                // check for associated comment on the rest of the line
+                $restOfTheLine = $configString->getRestOfTheLine();
+                if (1 === preg_match('/^\s*#/', $restOfTheLine)) {
+                    $commentPosition = strpos($restOfTheLine, '#');
+                    $configString->inc($commentPosition);
+                    $directive->setComment(Comment::fromString($configString));
+                }
+
+                return $directive;
             }
 
             $text .= $c;
@@ -217,7 +228,7 @@ class Directive
      * Set the comment text for this Directive.
      *
      * This will overwrite the existing comment.
-     * 
+     *
      * @param $text
      * @return $this
      */
