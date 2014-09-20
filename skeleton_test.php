@@ -26,6 +26,7 @@ echo $s2 . "\n\n";
 
 echo new Comment("This is a simple comment.") . "\n\n";
 
-echo new Comment("This \nis \r\na multi line " . PHP_EOL . "comment.") . "\n\n";
+echo new Comment("This \nis \r\na multi
+line " . PHP_EOL . "comment.") . "\n\n";
 
 echo "STOP\n";

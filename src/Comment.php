@@ -43,6 +43,26 @@ class Comment
     }
 
     /**
+     * Is this an empty (no text) comment?
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return ((is_null($this->text)) || ('' === $this->text));
+    }
+
+    /**
+     * Is this comment multi-line?
+     *
+     * @return bool
+     */
+    public function isMultiline()
+    {
+        return (false !== strpos(rtrim($this->text), "\n"));
+    }
+
+    /**
      * Set the comment text
      *
      * If you set the comment text to null or empty string,
@@ -57,8 +77,7 @@ class Comment
 
     public function prettyPrint($indentLevel, $spacesPerIndent = 4)
     {
-        if ((is_null($this->text)) || ('' === $this->getText()))
-        {
+        if (true === $this->isEmpty()) {
             return '';
         }
 
@@ -66,7 +85,7 @@ class Comment
         $text = $indent . "# " . rtrim($this->text);
 
         // check multi-line comment
-        if ((false !== strpos($text, "\n"))) {
+        if (true === $this->isMultiline()) {
             $text = preg_replace("#\r{0,1}\n#", PHP_EOL . $indent . "# ", $text);
         }
 
