@@ -15,11 +15,10 @@ echo "START\n";
 echo Scope::fromFile('m1.conf') . "\n\n";
 //*/
 
-$d = new Directive('listen', 667);
-echo $d->prettyPrint(0) . "\n\n";
+echo new Directive('listen', 667) . "\n\n";
 
 $s2 = new Scope();
-$s2->addDirective($d);
+$s2->addDirective(new Directive('listen', 1234));
 echo $s2 . "\n\n";
 
 echo new Comment("This is a simple comment.") . "\n\n";
