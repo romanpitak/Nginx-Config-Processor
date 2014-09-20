@@ -14,7 +14,6 @@ namespace RomanPitak\Nginx\Config;
 
 class File extends String
 {
-
     /** @var string $inFilePath */
     private $inFilePath;
 
@@ -33,7 +32,5 @@ class File extends String
         }
 
         parent::__construct($contents);
-
     }
-
 }

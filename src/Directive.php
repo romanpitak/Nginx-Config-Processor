@@ -14,7 +14,6 @@ namespace RomanPitak\Nginx\Config;
 
 class Directive
 {
-
     /** @var string $name */
     private $name;
 
@@ -44,6 +43,10 @@ class Directive
             $this->setParentScope($parentScope);
         }
     }
+
+    /*
+     * ========== Factories ==========
+     */
 
     /**
      * @param \RomanPitak\Nginx\Config\String $configString
@@ -108,6 +111,10 @@ class Directive
 
     }
 
+    /*
+     * ========== Getters ==========
+     */
+
     /**
      * Get parent Scope
      *
@@ -127,6 +134,10 @@ class Directive
     {
         return $this->childScope;
     }
+
+    /*
+     * ========== Setters ==========
+     */
 
     /**
      * Sets the parent Scope for this Directive.
@@ -160,6 +171,10 @@ class Directive
         return $this;
     }
 
+    /*
+     * ========== Printing ==========
+     */
+
     /**
      * Pretty print with indentation.
      *
@@ -174,5 +189,4 @@ class Directive
         $rs .= (!is_null($this->childScope)) ? (" {\n" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent . "}\n") : ";\n";
         return $rs;
     }
-
 }

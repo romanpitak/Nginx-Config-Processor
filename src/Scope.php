@@ -14,12 +14,15 @@ namespace RomanPitak\Nginx\Config;
 
 class Scope
 {
-
     /** @var Directive $parentDirective */
     private $parentDirective = null;
 
     /** @var Directive[] $directives */
     private $directives = array();
+
+    /*
+     * ========== Factories ==========
+     */
 
     /**
      * Create new Scope from the configuration string.
@@ -62,6 +65,24 @@ class Scope
         return self::fromString(new File($filePath));
     }
 
+    /*
+     * ========== Getters ==========
+     */
+
+    /**
+     * Get parent Directive.
+     *
+     * @return Directive|null
+     */
+    public function getParentDirective()
+    {
+        return $this->parentDirective;
+    }
+
+    /*
+     * ========== Setters ==========
+     */
+
     /**
      * Add a Directive to the list of this Scopes directives
      *
@@ -79,16 +100,6 @@ class Scope
         $this->directives[] = $directive;
 
         return $this;
-    }
-
-    /**
-     * Get parent Directive.
-     *
-     * @return Directive|null
-     */
-    public function getParentDirective()
-    {
-        return $this->parentDirective;
     }
 
     /**
@@ -111,6 +122,10 @@ class Scope
         return $this;
     }
 
+    /*
+     * ========== Printing ==========
+     */
+
     /**
      * Pretty print with indentation.
      *
@@ -132,5 +147,4 @@ class Scope
     {
         return $this->prettyPrint(-1);
     }
-
 }
