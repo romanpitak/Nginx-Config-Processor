@@ -26,13 +26,17 @@ class Directive
     /** @var Scope $parentScope */
     private $parentScope = null;
 
+    /** @var Comment $comment */
+    private $comment = null;
+
     /**
      * @param string $name
      * @param string $value
      * @param Scope $childScope
      * @param Scope $parentScope
+     * @param Comment $comment
      */
-    public function __construct($name, $value, Scope $childScope = null, Scope $parentScope = null)
+    public function __construct($name, $value, Scope $childScope = null, Scope $parentScope = null, Comment $comment = null)
     {
         $this->name = $name;
         $this->value = $value;
@@ -41,6 +45,9 @@ class Directive
         }
         if (!is_null($parentScope)) {
             $this->setParentScope($parentScope);
+        }
+        if (!is_null($comment)) {
+            $this->setComment($comment);
         }
     }
 
@@ -57,8 +64,6 @@ class Directive
     {
         $text = '';
         while (false === $configString->eof()) {
-
-            $configString->skipComment();
 
             $c = $configString->getChar();
 
@@ -135,6 +140,29 @@ class Directive
         return $this->childScope;
     }
 
+    /**
+     * Get the associated Comment for this Directive.
+     *
+     * @return Comment
+     */
+    public function getComment()
+    {
+        if (is_null($this->comment)) {
+            $this->comment = new Comment();
+        }
+        return $this->comment;
+    }
+
+    /**
+     * Does this Directive have a Comment associated with it?
+     *
+     * @return bool
+     */
+    public function hasComment()
+    {
+        return (!$this->getComment()->isEmpty());
+    }
+
     /*
      * ========== Setters ==========
      */
@@ -171,6 +199,18 @@ class Directive
         return $this;
     }
 
+    public function setComment(Comment $comment)
+    {
+        $this->comment = $comment;
+        return $this;
+    }
+
+    public function setCommentText($text)
+    {
+        $this->getComment()->setText($text);
+        return $this;
+    }
+
     /*
      * ========== Printing ==========
      */
@@ -185,8 +225,29 @@ class Directive
     public function prettyPrint($indentLevel, $spacesPerIndent = 4)
     {
         $indent = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel);
+
         $rs = $indent . $this->name . " " . $this->value;
-        $rs .= (!is_null($this->childScope)) ? (" {\n" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent . "}\n") : ";\n";
-        return $rs;
+
+        if (is_null($this->getChildScope())) {
+            $rs .= ";";
+        } else {
+            $rs .= " {\n" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent . "}";
+        }
+
+        if (true === $this->hasComment()) {
+            if (false === $this->getComment()->isMultiline()) {
+                $rs .= " " . $this->comment->prettyPrint(0,0);
+            } else {
+                $comment = $this->getComment()->prettyPrint($indentLevel, $spacesPerIndent);
+                $rs = $comment . "\n" . $rs;
+            }
+        }
+
+        return $rs . "\n";
+    }
+
+    public function __toString()
+    {
+        return $this->prettyPrint(0);
     }
 }

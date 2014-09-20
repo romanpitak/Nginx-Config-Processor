@@ -29,4 +29,12 @@ echo new Comment("This is a simple comment.") . "\n\n";
 echo new Comment("This \nis \r\na multi
 line " . PHP_EOL . "comment.") . "\n\n";
 
+$dc = new Directive('deny', 'all');
+$dc->setCommentText('Directive with a comment');
+echo $dc . "\n\n";
+
+$dc->setCommentText('Directive with a multi
+line comment');
+echo $dc . "\n\n";
+
 echo "STOP\n";
