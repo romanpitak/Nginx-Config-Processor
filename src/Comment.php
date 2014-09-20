@@ -84,11 +84,10 @@ class Comment extends Printable
         $indent = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel);
         $text = $indent . "# " . rtrim($this->text);
 
-        // check multi-line comment
         if (true === $this->isMultiline()) {
             $text = preg_replace("#\r{0,1}\n#", PHP_EOL . $indent . "# ", $text);
         }
 
-        return $text;
+        return $text . "\n";
     }
 }

@@ -261,7 +261,9 @@ class Directive extends Printable
             $rs .= " {\n" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent . "}";
         }
 
-        if (true === $this->hasComment()) {
+        if (false === $this->hasComment()) {
+            $rs .= "\n";
+        } else {
             if (false === $this->getComment()->isMultiline()) {
                 $rs .= " " . $this->comment->prettyPrint(0,0);
             } else {
@@ -270,6 +272,6 @@ class Directive extends Printable
             }
         }
 
-        return $rs . "\n";
+        return $rs;
     }
 }
