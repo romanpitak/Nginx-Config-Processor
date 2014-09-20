@@ -41,6 +41,10 @@ class Scope extends Printable
 
             $configString->skipComment();
 
+            if (true === $configString->isEmptyLine()) {
+                $scope->addPrintable(EmptyLine::fromString($configString));
+            }
+
             $c = $configString->getChar();
 
             if (('a' <= $c) && ('z' >= $c)) {
@@ -107,7 +111,7 @@ class Scope extends Printable
     }
 
     /**
-     * Add printable element. 
+     * Add printable element.
      *
      * @param Printable $printable
      */
