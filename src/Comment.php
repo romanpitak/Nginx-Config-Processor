@@ -12,7 +12,7 @@
 
 namespace RomanPitak\Nginx\Config;
 
-class Comment
+class Comment extends Printable
 {
     /** @var string $text */
     private $text = null;
@@ -91,10 +91,4 @@ class Comment
 
         return $text;
     }
-
-    public function __toString()
-    {
-        return $this->prettyPrint(0);
-    }
-
 }

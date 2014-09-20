@@ -12,13 +12,16 @@
 
 namespace RomanPitak\Nginx\Config;
 
-class Scope
+class Scope extends Printable
 {
     /** @var Directive $parentDirective */
     private $parentDirective = null;
 
     /** @var Directive[] $directives */
     private $directives = array();
+
+    /** @var Printable[] $printables */
+    private $printables = array();
 
     /*
      * ========== Factories ==========
@@ -98,8 +101,19 @@ class Scope
         }
 
         $this->directives[] = $directive;
+        $this->addPrintable($directive);
 
         return $this;
+    }
+
+    /**
+     * Add printable element. 
+     *
+     * @param Printable $printable
+     */
+    private function addPrintable(Printable $printable)
+    {
+        $this->printables[] = $printable;
     }
 
     /**
@@ -123,7 +137,7 @@ class Scope
     }
 
     /*
-     * ========== Printing ==========
+     * ========== Printable ==========
      */
 
     /**
@@ -136,15 +150,10 @@ class Scope
     public function prettyPrint($indentLevel, $spacesPerIndent = 4)
     {
         $rs = "";
-        foreach ($this->directives as $directive) {
-            $rs .= $directive->prettyPrint($indentLevel + 1, $spacesPerIndent);
+        foreach ($this->printables as $printable) {
+            $rs .= $printable->prettyPrint($indentLevel + 1, $spacesPerIndent);
         }
 
         return $rs;
-    }
-
-    public function __toString()
-    {
-        return $this->prettyPrint(-1);
     }
 }

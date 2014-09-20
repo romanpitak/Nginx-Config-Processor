@@ -12,7 +12,7 @@
 
 namespace RomanPitak\Nginx\Config;
 
-class Directive
+class Directive extends Printable
 {
     /** @var string $name */
     private $name;
@@ -271,10 +271,5 @@ class Directive
         }
 
         return $rs . "\n";
-    }
-
-    public function __toString()
-    {
-        return $this->prettyPrint(0);
     }
 }
