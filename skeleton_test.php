@@ -12,8 +12,7 @@ require_once('src/File.php');
 echo "START\n";
 
 //*
-$f = new File('m1.conf');
-$s = Scope::fromString($f);
+$s = Scope::fromFile('m1.conf');
 echo $s . "\n\n";
 //*/
 

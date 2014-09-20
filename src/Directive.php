@@ -199,12 +199,28 @@ class Directive
         return $this;
     }
 
+    /**
+     * Set the associated Comment object for this Directive.
+     *
+     * This will overwrite the existing comment.
+     *
+     * @param Comment $comment
+     * @return $this
+     */
     public function setComment(Comment $comment)
     {
         $this->comment = $comment;
         return $this;
     }
 
+    /**
+     * Set the comment text for this Directive.
+     *
+     * This will overwrite the existing comment.
+     * 
+     * @param $text
+     * @return $this
+     */
     public function setCommentText($text)
     {
         $this->getComment()->setText($text);
