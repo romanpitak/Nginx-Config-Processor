@@ -163,4 +163,9 @@ class Scope extends Printable
 
         return $rs;
     }
+
+    public function __toString()
+    {
+        return $this->prettyPrint(-1);
+    }
 }
