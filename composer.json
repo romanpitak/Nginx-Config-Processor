@@ -1,0 +1,52 @@
+{
+    "name": "romanpitak/Nginx-Config-Processor",
+    "type": "library",
+    "description": "Nginx configuration files processor.",
+    "keywords": [
+        "nginx",
+        "conf",
+        "conf file",
+        "config",
+        "config file",
+        "configuration",
+        "configuration file",
+        "processor",
+        "parser",
+        "create",
+        "creator",
+        "manager",
+        "php"
+    ],
+    "homepage": "https://github.com/romanpitak/Nginx-Config-Processor",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Roman Piták",
+            "email": "roman@pitak.net",
+            "homepage": "http://pitak.net",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "roman@pitak.net",
+        "issues": "https://github.com/romanpitak/Nginx-Config-Processor/issues",
+        "source": "https://github.com/romanpitak/Nginx-Config-Processor"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/romanpitak/Nginx-Config-Processor.git"
+        }
+    ],
+    "bugs": {
+        "url": "https://github.com/romanpitak/Nginx-Config-Processor/issues"
+    },
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "RomanPitak\\Nginx\\Config\\": "src/"
+        }
+    }
+}
