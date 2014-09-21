@@ -56,6 +56,21 @@ class Directive extends Printable
      */
 
     /**
+     * Provides fluid interface.
+     *
+     * @param $name
+     * @param null $value
+     * @param Scope $childScope
+     * @param Scope $parentScope
+     * @param Comment $comment
+     * @return Directive
+     */
+    public static function create($name, $value = null, Scope $childScope = null, Scope $parentScope = null, Comment $comment = null)
+    {
+        return new self($name, $value, $childScope, $parentScope, $comment);
+    }
+
+    /**
      * @param \RomanPitak\Nginx\Config\String $configString
      * @return self
      * @throws Exception

@@ -54,6 +54,16 @@ class Scope extends Printable
      */
 
     /**
+     * Provides fluid interface.
+     *
+     * @return Scope
+     */
+    public static function create()
+    {
+        return new self();
+    }
+
+    /**
      * Create new Scope from the configuration string.
      *
      * @param \RomanPitak\Nginx\Config\String $configString
