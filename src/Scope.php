@@ -23,6 +23,32 @@ class Scope extends Printable
     /** @var Printable[] $printables */
     private $printables = array();
 
+    /**
+     * Write this Scope into a file.
+     *
+     * @param $filePath
+     * @throws Exception
+     */
+    public function saveToFile($filePath)
+    {
+        $handle = @fopen($filePath, 'w');
+        if (false === $handle)
+        {
+            throw new Exception('Cannot open file "' . $filePath . '" for writing.');
+        }
+
+        $bytesWritten = @fwrite($handle, (string)$this);
+        if (false === $bytesWritten) {
+            fclose($handle);
+            throw new Exception('Cannot write into file "' . $filePath . '".');
+        }
+
+        $closed = @fclose($handle);
+        if (false === $closed) {
+            throw new Exception('Cannot close file handle for "' . $filePath . '".');
+        }
+    }
+
     /*
      * ========== Factories ==========
      */
