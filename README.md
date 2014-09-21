@@ -1,4 +1,17 @@
 # Nginx Configuration Processor
+[![Latest Stable Version](https://poser.pugx.org/romanpitak/nginx-config-processor/v/stable.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor) 
+[![Total Downloads](https://poser.pugx.org/romanpitak/nginx-config-processor/downloads.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor) 
+[![License](https://poser.pugx.org/romanpitak/nginx-config-processor/license.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor)
+
+(c) 2014 Roman Piták, http://pitak.net <roman@pitak.net>
+
+PHP Nginx configuration files processor (parser, creator).
+
+## Installation
+The best way to install is to use the [Composer](https://getcomposer.org/) dependency manager.
+```
+php composer.phar require romanpitak/nginx-config-processor
+```
 
 ## Features
 
