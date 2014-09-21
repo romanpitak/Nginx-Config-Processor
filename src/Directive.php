@@ -36,7 +36,7 @@ class Directive extends Printable
      * @param Scope $parentScope
      * @param Comment $comment
      */
-    public function __construct($name, $value, Scope $childScope = null, Scope $parentScope = null, Comment $comment = null)
+    public function __construct($name, $value = null, Scope $childScope = null, Scope $parentScope = null, Comment $comment = null)
     {
         $this->name = $name;
         $this->value = $value;
@@ -274,7 +274,10 @@ class Directive extends Printable
     {
         $indent = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel);
 
-        $rs = $indent . $this->name . " " . $this->value;
+        $rs = $indent . $this->name;
+        if (!is_null($this->value)) {
+            $rs .= " " . $this->value;
+        }
 
         if (is_null($this->getChildScope())) {
             $rs .= ";";
