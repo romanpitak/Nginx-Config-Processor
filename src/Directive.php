@@ -68,12 +68,25 @@ class Directive extends Printable
             $c = $configString->getChar();
 
             if ('{' === $c) {
+
+                $configString->inc();
                 list($name, $value) = self::processText($text);
                 $directive = new Directive($name, $value);
+
+                if (false !== ($comment = self::checkRestOfTheLineForComment($configString))) {
+                    $directive->setComment($comment);
+                }
+
                 $childScope = Scope::fromString($configString);
                 $childScope->setParentDirective($directive);
                 $directive->setChildScope($childScope);
+
                 $configString->inc();
+
+                if (false !== ($comment = self::checkRestOfTheLineForComment($configString))) {
+                    $directive->setComment($comment);
+                }
+
                 return $directive;
             }
 
@@ -82,12 +95,8 @@ class Directive extends Printable
                 list($name, $value) = self::processText($text);
                 $directive = new Directive($name, $value);
 
-                // check for associated comment on the rest of the line
-                $restOfTheLine = $configString->getRestOfTheLine();
-                if (1 === preg_match('/^\s*#/', $restOfTheLine)) {
-                    $commentPosition = strpos($restOfTheLine, '#');
-                    $configString->inc($commentPosition);
-                    $directive->setComment(Comment::fromString($configString));
+                if (false !== ($comment = self::checkRestOfTheLineForComment($configString))) {
+                    $directive->setComment($comment);
                 }
 
                 return $directive;
@@ -98,6 +107,18 @@ class Directive extends Printable
             $configString->inc();
         }
         throw new Exception('Could not create directive.');
+    }
+
+    private static function checkRestOfTheLineForComment(String $configString)
+    {
+        $restOfTheLine = $configString->getRestOfTheLine();
+        if (1 !== preg_match('/^\s*#/', $restOfTheLine)) {
+            return false;
+        }
+
+        $commentPosition = strpos($restOfTheLine, '#');
+        $configString->inc($commentPosition);
+        return Comment::fromString($configString);
     }
 
     private static function processText($text)
@@ -258,18 +279,22 @@ class Directive extends Printable
         if (is_null($this->getChildScope())) {
             $rs .= ";";
         } else {
-            $rs .= " {\n" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent . "}";
+            $rs .= " {";
         }
 
         if (false === $this->hasComment()) {
             $rs .= "\n";
         } else {
             if (false === $this->getComment()->isMultiline()) {
-                $rs .= " " . $this->comment->prettyPrint(0,0);
+                $rs .= " " . $this->comment->prettyPrint(0, 0);
             } else {
                 $comment = $this->getComment()->prettyPrint($indentLevel, $spacesPerIndent);
-                $rs = $comment . "\n" . $rs;
+                $rs = $comment . $rs;
             }
+        }
+
+        if (!is_null($this->getChildScope())) {
+            $rs .= "" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent . "}\n";
         }
 
         return $rs;
