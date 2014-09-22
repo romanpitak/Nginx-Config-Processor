@@ -9,8 +9,8 @@ PHP Nginx configuration files processor (parser, creator).
 
 ## Installation
 The best way to install is to use the [Composer](https://getcomposer.org/) dependency manager.
-```shell
-$ php composer.phar require romanpitak/nginx-config-processor
+```
+php composer.phar require romanpitak/nginx-config-processor
 ```
 
 ## Features
