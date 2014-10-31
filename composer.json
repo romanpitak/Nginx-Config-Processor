@@ -1,5 +1,5 @@
 {
-    "name": "romanpitak/Nginx-Config-Processor",
+    "name": "romanpitak/nginx-config-processor",
     "type": "library",
     "description": "Nginx configuration files processor.",
     "keywords": [
