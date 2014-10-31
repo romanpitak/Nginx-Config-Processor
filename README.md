@@ -17,11 +17,12 @@ php composer.phar require romanpitak/nginx-config-processor
 
 ### Pretty Print
 ```php
-Scope::fromFile('m1.conf')->saveToFile('out.conf');
+<?php Scope::fromFile('m1.conf')->saveToFile('out.conf');
 ```
 
 ### Config Create
 ```php
+<?php
 Scope::create()
     ->addDirective(Directive::create('server')
         ->setChildScope(Scope::create()
@@ -51,7 +52,7 @@ server {
 ### Comments handling
 #### Simple comments
 ```php
-echo new Comment("This is a simple comment.");
+<?php echo new Comment("This is a simple comment.");
 ```
 output:
 ```nginx
@@ -59,6 +60,7 @@ output:
 ```
 #### Multi-line comments
 ```php
+<?php
 echo new Comment("This \nis \r\na multi
 line " . PHP_EOL . "comment.");
 ```
@@ -74,7 +76,7 @@ output:
 
 #### Directive with a simple comment
 ```php
-echo Directive::create('deny', 'all')->setCommentText('Directive with a comment');
+<?php echo Directive::create('deny', 'all')->setCommentText('Directive with a comment');
 ```
 output:
 ```nginx
@@ -83,7 +85,7 @@ deny all; # Directive with a comment
 
 #### Directive with a multi-line comment
 ```php
-echo Directive::create('deny', 'all')->setCommentText('Directive
+<?php echo Directive::create('deny', 'all')->setCommentText('Directive
 with a multi line comment');
 ```
 output:
