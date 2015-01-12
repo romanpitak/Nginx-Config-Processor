@@ -3,7 +3,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/romanpitak/nginx-config-processor.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor) 
 [![License](https://img.shields.io/packagist/l/romanpitak/nginx-config-processor.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor)
 
-(c) 2014 Roman Piták, http://pitak.net <roman@pitak.net>
+(c) 2014-2015 Roman Piták, http://pitak.net <roman@pitak.net>
 
 PHP Nginx configuration files processor (parser, creator).
 
