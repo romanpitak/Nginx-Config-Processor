@@ -148,29 +148,29 @@ class Directive extends Printable
 
     private static function processText($text)
     {
-        $found = false;
-        $name = null;
-        $value = null;
-
-        $patternWithValue = '#^([a-z_]+) +([^;{]+)$#';
-        if (1 === preg_match($patternWithValue, $text, $matches)) {
-            $name = $matches[1];
-            $value = rtrim($matches[2]);
-            $found = true;
+        $result = self::checkKeyValue($text);
+        if (is_array($result)) {
+            return $result;
         }
-
-        $patternWithoutValue = '#^([a-z_]+) *$#';
-        if (1 === preg_match($patternWithoutValue, $text, $matches)) {
-            $name = $matches[1];
-            $value = null;
-            $found = true;
+        $result = self::checkKey($text);
+        if (is_array($result)) {
+            return $result;
         }
-        if (false === $found) {
-            throw new Exception('Text "' . $text . '" did not match pattern.');
+        throw new Exception('Text "' . $text . '" did not match pattern.');
+    }
+
+    private static function checkKeyValue($text) {
+        if (1 === preg_match('#^([a-z_]+) +([^;{]+)$#', $text, $matches)) {
+            return array($matches[1], rtrim($matches[2]));
         }
+        return false;
+    }
 
-        return array($name, $value);
-
+    private static function checkKey($text) {
+        if (1 === preg_match('#^([a-z_]+) *$#', $text, $matches)) {
+            return array($matches[1], null);
+        }
+        return false;
     }
 
     /*
