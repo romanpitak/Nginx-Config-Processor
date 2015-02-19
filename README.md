@@ -2,6 +2,7 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/romanpitak/nginx-config-processor.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor) 
 [![Total Downloads](https://img.shields.io/packagist/dt/romanpitak/nginx-config-processor.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor) 
 [![License](https://img.shields.io/packagist/l/romanpitak/nginx-config-processor.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor)
+[![Code Climate](https://codeclimate.com/github/romanpitak/Nginx-Config-Processor/badges/gpa.svg)](https://codeclimate.com/github/romanpitak/Nginx-Config-Processor)
 
 (c) 2014-2015 Roman Piták, http://pitak.net <roman@pitak.net>
 
