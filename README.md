@@ -1,5 +1,6 @@
 # Nginx Configuration Processor
-[![Latest Stable Version](https://img.shields.io/packagist/v/romanpitak/nginx-config-processor.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor) 
+
+[![Latest Stable Version](https://img.shields.io/packagist/v/romanpitak/nginx-config-processor.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor)
 [![Total Downloads](https://img.shields.io/packagist/dt/romanpitak/nginx-config-processor.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor)
 [![License](https://img.shields.io/packagist/l/romanpitak/nginx-config-processor.svg)](https://packagist.org/packages/romanpitak/nginx-config-processor)
 [![Code Climate](https://codeclimate.com/github/romanpitak/Nginx-Config-Processor/badges/gpa.svg)](https://codeclimate.com/github/romanpitak/Nginx-Config-Processor)
@@ -10,7 +11,9 @@
 PHP Nginx configuration files processor (parser, creator).
 
 ## Installation
+
 The best way to install is to use the [Composer](https://getcomposer.org/) dependency manager.
+
 ```
 php composer.phar require romanpitak/nginx-config-processor
 ```
@@ -18,11 +21,13 @@ php composer.phar require romanpitak/nginx-config-processor
 ## Features
 
 ### Pretty Print
+
 ```php
 <?php Scope::fromFile('m1.conf')->saveToFile('out.conf');
 ```
 
 ### Config Create
+
 ```php
 <?php
 Scope::create()
@@ -39,7 +44,9 @@ Scope::create()
     )
     ->saveToFile('example.net');
 ```
+
 File _example.net_:
+
 ```nginx
 server {
     listen 8080;
@@ -52,21 +59,29 @@ server {
 ```
 
 ### Comments handling
+
 #### Simple comments
+
 ```php
 <?php echo new Comment("This is a simple comment.");
 ```
+
 output:
+
 ```nginx
 # This is a simple comment.
 ```
+
 #### Multi-line comments
+
 ```php
 <?php
 echo new Comment("This \nis \r\na multi
 line " . PHP_EOL . "comment.");
 ```
+
 output:
+
 ```nginx
 # This
 # is
@@ -74,23 +89,28 @@ output:
 # line
 # comment.
 ```
-####
 
 #### Directive with a simple comment
+
 ```php
 <?php echo Directive::create('deny', 'all')->setCommentText('Directive with a comment');
 ```
+
 output:
+
 ```nginx
 deny all; # Directive with a comment
 ```
 
 #### Directive with a multi-line comment
+
 ```php
 <?php echo Directive::create('deny', 'all')->setCommentText('Directive
 with a multi line comment');
 ```
+
 output:
+
 ```nginx
 # Directive
 # with a multi line comment
