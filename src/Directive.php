@@ -89,49 +89,60 @@ class Directive extends Printable
     {
         $text = '';
         while (false === $configString->eof()) {
-
             $char = $configString->getChar();
-
             if ('{' === $char) {
-
-                $configString->inc();
-                list($name, $value) = self::processText($text);
-                $directive = new Directive($name, $value);
-
-                if (false !== ($comment = self::checkRestOfTheLineForComment($configString))) {
-                    $directive->setComment($comment);
-                }
-
-                $childScope = Scope::fromString($configString);
-                $childScope->setParentDirective($directive);
-                $directive->setChildScope($childScope);
-
-                $configString->inc();
-
-                if (false !== ($comment = self::checkRestOfTheLineForComment($configString))) {
-                    $directive->setComment($comment);
-                }
-
-                return $directive;
+                return self::newDirectiveWithScope($text, $configString);
             }
-
             if (';' === $char) {
-                $configString->inc();
-                list($name, $value) = self::processText($text);
-                $directive = new Directive($name, $value);
-
-                if (false !== ($comment = self::checkRestOfTheLineForComment($configString))) {
-                    $directive->setComment($comment);
-                }
-
-                return $directive;
+                return self::newDirectiveWithoutScope($text, $configString);
             }
-
             $text .= $char;
-
             $configString->inc();
         }
         throw new Exception('Could not create directive.');
+    }
+
+    private static function newDirectiveWithScope(
+        $nameString,
+        String $scopeString
+    ) {
+        $scopeString->inc();
+        list($name, $value) = self::processText($nameString);
+        $directive = new Directive($name, $value);
+
+        $comment = self::checkRestOfTheLineForComment($scopeString);
+        if (false !== $comment) {
+            $directive->setComment($comment);
+        }
+
+        $childScope = Scope::fromString($scopeString);
+        $childScope->setParentDirective($directive);
+        $directive->setChildScope($childScope);
+
+        $scopeString->inc();
+
+        $comment = self::checkRestOfTheLineForComment($scopeString);
+        if (false !== $comment) {
+            $directive->setComment($comment);
+        }
+
+        return $directive;
+    }
+
+    private static function newDirectiveWithoutScope(
+        $nameString,
+        String $configString
+    ) {
+        $configString->inc();
+        list($name, $value) = self::processText($nameString);
+        $directive = new Directive($name, $value);
+
+        $comment = self::checkRestOfTheLineForComment($configString);
+        if (false !== $comment) {
+            $directive->setComment($comment);
+        }
+
+        return $directive;
     }
 
     private static function checkRestOfTheLineForComment(String $configString)
