@@ -36,8 +36,13 @@ class Directive extends Printable
      * @param Scope $parentScope
      * @param Comment $comment
      */
-    public function __construct($name, $value = null, Scope $childScope = null, Scope $parentScope = null, Comment $comment = null)
-    {
+    public function __construct(
+        $name,
+        $value = null,
+        Scope $childScope = null,
+        Scope $parentScope = null,
+        Comment $comment = null
+    ) {
         $this->name = $name;
         $this->value = $value;
         if (!is_null($childScope)) {
@@ -65,8 +70,13 @@ class Directive extends Printable
      * @param Comment $comment
      * @return Directive
      */
-    public static function create($name, $value = null, Scope $childScope = null, Scope $parentScope = null, Comment $comment = null)
-    {
+    public static function create(
+        $name,
+        $value = null,
+        Scope $childScope = null,
+        Scope $parentScope = null,
+        Comment $comment = null
+    ) {
         return new self($name, $value, $childScope, $parentScope, $comment);
     }
 
@@ -80,9 +90,9 @@ class Directive extends Printable
         $text = '';
         while (false === $configString->eof()) {
 
-            $c = $configString->getChar();
+            $char = $configString->getChar();
 
-            if ('{' === $c) {
+            if ('{' === $char) {
 
                 $configString->inc();
                 list($name, $value) = self::processText($text);
@@ -105,7 +115,7 @@ class Directive extends Printable
                 return $directive;
             }
 
-            if (';' === $c) {
+            if (';' === $char) {
                 $configString->inc();
                 list($name, $value) = self::processText($text);
                 $directive = new Directive($name, $value);
@@ -117,7 +127,7 @@ class Directive extends Printable
                 return $directive;
             }
 
-            $text .= $c;
+            $text .= $char;
 
             $configString->inc();
         }
@@ -289,32 +299,32 @@ class Directive extends Printable
     {
         $indent = str_repeat(str_repeat(' ', $spacesPerIndent), $indentLevel);
 
-        $rs = $indent . $this->name;
+        $resultString = $indent . $this->name;
         if (!is_null($this->value)) {
-            $rs .= " " . $this->value;
+            $resultString .= " " . $this->value;
         }
 
         if (is_null($this->getChildScope())) {
-            $rs .= ";";
+            $resultString .= ";";
         } else {
-            $rs .= " {";
+            $resultString .= " {";
         }
 
         if (false === $this->hasComment()) {
-            $rs .= "\n";
+            $resultString .= "\n";
         } else {
             if (false === $this->getComment()->isMultiline()) {
-                $rs .= " " . $this->comment->prettyPrint(0, 0);
+                $resultString .= " " . $this->comment->prettyPrint(0, 0);
             } else {
                 $comment = $this->getComment()->prettyPrint($indentLevel, $spacesPerIndent);
-                $rs = $comment . $rs;
+                $resultString = $comment . $resultString;
             }
         }
 
         if (!is_null($this->getChildScope())) {
-            $rs .= "" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent . "}\n";
+            $resultString .= "" . $this->childScope->prettyPrint($indentLevel, $spacesPerIndent) . $indent . "}\n";
         }
 
-        return $rs;
+        return $resultString;
     }
 }

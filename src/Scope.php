@@ -32,8 +32,7 @@ class Scope extends Printable
     public function saveToFile($filePath)
     {
         $handle = @fopen($filePath, 'w');
-        if (false === $handle)
-        {
+        if (false === $handle) {
             throw new Exception('Cannot open file "' . $filePath . '" for writing.');
         }
 
@@ -79,14 +78,14 @@ class Scope extends Printable
                 $scope->addPrintable(EmptyLine::fromString($configString));
             }
 
-            $c = $configString->getChar();
+            $char = $configString->getChar();
 
-            if ('#' === $c) {
+            if ('#' === $char) {
                 $scope->addPrintable(Comment::fromString($configString));
                 continue;
             }
 
-            if (('a' <= $c) && ('z' >= $c)) {
+            if (('a' <= $char) && ('z' >= $char)) {
                 $scope->addDirective(Directive::fromString($configString));
                 continue;
             }
@@ -192,12 +191,12 @@ class Scope extends Printable
      */
     public function prettyPrint($indentLevel, $spacesPerIndent = 4)
     {
-        $rs = "";
+        $resultString = "";
         foreach ($this->printables as $printable) {
-            $rs .= $printable->prettyPrint($indentLevel + 1, $spacesPerIndent);
+            $resultString .= $printable->prettyPrint($indentLevel + 1, $spacesPerIndent);
         }
 
-        return $rs;
+        return $resultString;
     }
 
     public function __toString()
