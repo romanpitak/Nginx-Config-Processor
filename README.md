@@ -7,7 +7,7 @@
 [![Code Climate](https://codeclimate.com/github/romanpitak/Nginx-Config-Processor/badges/gpa.svg)](https://codeclimate.com/github/romanpitak/Nginx-Config-Processor)
 [![Test Coverage](https://codeclimate.com/github/romanpitak/Nginx-Config-Processor/badges/coverage.svg)](https://codeclimate.com/github/romanpitak/Nginx-Config-Processor/coverage)
 [![Codacy Badge](https://www.codacy.com/project/badge/bf83cd710c374869a96cd5d5e44e0329)](https://www.codacy.com/public/roman/Nginx-Config-Processor)
-
+[![Codacy Badge](https://api.codacy.com/project/badge/coverage/bf83cd710c374869a96cd5d5e44e0329)](https://www.codacy.com/app/roman/Nginx-Config-Processor)
 
 (c) 2014-2016 [Roman Piták](http://pitak.net) <roman@pitak.net>
 
