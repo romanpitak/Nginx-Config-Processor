@@ -12,7 +12,7 @@
 
 namespace RomanPitak\Nginx\Config;
 
-class File extends String
+class File extends Text
 {
     /** @var string $inFilePath */
     private $inFilePath;

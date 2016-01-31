@@ -14,7 +14,7 @@ namespace RomanPitak\Nginx\Config;
 
 class EmptyLine extends Printable
 {
-    public static function fromString(String $configString)
+    public static function fromString(Text $configString)
     {
         $configString->gotoNextEol();
         return new self;

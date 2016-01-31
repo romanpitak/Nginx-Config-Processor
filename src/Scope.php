@@ -65,11 +65,11 @@ class Scope extends Printable
     /**
      * Create new Scope from the configuration string.
      *
-     * @param \RomanPitak\Nginx\Config\String $configString
+     * @param \RomanPitak\Nginx\Config\Text $configString
      * @return Scope
      * @throws Exception
      */
-    public static function fromString(String $configString)
+    public static function fromString(Text $configString)
     {
         $scope = new Scope();
         while (false === $configString->eof()) {

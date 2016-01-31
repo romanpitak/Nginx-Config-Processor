@@ -12,7 +12,7 @@
 
 namespace RomanPitak\Nginx\Config;
 
-class String
+class Text
 {
     const CURRENT_POSITION = -1;
 

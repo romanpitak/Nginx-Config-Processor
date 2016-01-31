@@ -81,11 +81,11 @@ class Directive extends Printable
     }
 
     /**
-     * @param \RomanPitak\Nginx\Config\String $configString
+     * @param \RomanPitak\Nginx\Config\Text $configString
      * @return self
      * @throws Exception
      */
-    public static function fromString(String $configString)
+    public static function fromString(Text $configString)
     {
         $text = '';
         while (false === $configString->eof()) {
@@ -104,7 +104,7 @@ class Directive extends Printable
 
     private static function newDirectiveWithScope(
         $nameString,
-        String $scopeString
+        Text $scopeString
     ) {
         $scopeString->inc();
         list($name, $value) = self::processText($nameString);
@@ -131,7 +131,7 @@ class Directive extends Printable
 
     private static function newDirectiveWithoutScope(
         $nameString,
-        String $configString
+        Text $configString
     ) {
         $configString->inc();
         list($name, $value) = self::processText($nameString);
@@ -145,7 +145,7 @@ class Directive extends Printable
         return $directive;
     }
 
-    private static function checkRestOfTheLineForComment(String $configString)
+    private static function checkRestOfTheLineForComment(Text $configString)
     {
         $restOfTheLine = $configString->getRestOfTheLine();
         if (1 !== preg_match('/^\s*#/', $restOfTheLine)) {

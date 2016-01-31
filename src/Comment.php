@@ -22,7 +22,7 @@ class Comment extends Printable
         $this->text = $text;
     }
 
-    public static function fromString(String $configString)
+    public static function fromString(Text $configString)
     {
         $text = '';
         while ((false === $configString->eof()) && (false === $configString->eol())) {
