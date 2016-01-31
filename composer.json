@@ -44,6 +44,9 @@
     "require": {
         "php": ">=5.3.3"
     },
+    "require-dev": {
+        "codeclimate/php-test-reporter": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "RomanPitak\\Nginx\\Config\\": "src/"

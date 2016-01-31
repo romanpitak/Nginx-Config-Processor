@@ -4,3 +4,5 @@ php:
     - 5.6
     - 7.0
 script: make test
+after_script:
+  - vendor/bin/test-reporter

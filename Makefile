@@ -2,7 +2,7 @@
 .PHONY: test clean coverage
 
 vendor: composer.json
-	composer install
+	composer install --dev
 
 build:
 	mkdir --parents -- $@
