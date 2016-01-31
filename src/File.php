@@ -33,4 +33,9 @@ class File extends Text
 
         parent::__construct($contents);
     }
+
+    public function getIncludePath()
+    {
+        return realpath(dirname($this->inFilePath));
+    }
 }

@@ -135,7 +135,15 @@ class Directive extends Printable
     ) {
         $configString->inc();
         list($name, $value) = self::processText($nameString);
-        $directive = new Directive($name, $value);
+
+        switch($name){
+            case 'include':
+                $directive = new IncludeDirective($value, $configString->getIncludePath());
+                break;
+            default:
+                $directive = new Directive($name, $value);
+                break;
+        }
 
         $comment = self::checkRestOfTheLineForComment($configString);
         if (false !== $comment) {

@@ -172,6 +172,11 @@ class Text
         return (!isset($this->data[$position]));
     }
 
+    public function getIncludePath()
+    {
+        return realpath('');
+    }
+
     /*
      * ========== Manipulators ==========
      */
